@@ -28,6 +28,7 @@ const main = async () => {
     const app = Express();
 
     const RedisStore = connectRedis(session);
+    
 
     app.use(cors({
         credentials: true,
@@ -36,18 +37,21 @@ const main = async () => {
 
     app.use(
         session({
-            store: new RedisStore({
-                client: redis as any
-            }),
             name: "qid",
-            secret: "gjasdas67788",
-            resave: false,
-            saveUninitialized: false,
+            store: new RedisStore({
+                client: redis as any,
+                disableTouch: true,
+            }),
             cookie: {
                 httpOnly: true,
-                secure: process.env.NODE_ENV === "production",
+                secure: false,
                 maxAge: 1000 * 60 * 60 * 24 * 7 * 365, // 7 years
-            }
+                sameSite: 'lax'
+            },
+            secret: 'qiwroasdjlasddde',
+            resave: false,
+            saveUninitialized: false,
+            
         })
     );
 
