@@ -30,9 +30,11 @@ export class LoginResolver {
             return null
         }
 
-        ctx.req.session!.userId = user.id;
+        // if (!user.confirmed) {
+        //     return null
+        // }
 
-        console.log("data:", ctx.req.session!.userId)
+        ctx.req.session!.userId = user.id;
 
         return user;
     }

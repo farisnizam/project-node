@@ -17,18 +17,21 @@ const main = async () => {
     const schema = await buildSchema({
         resolvers: [MeResolver, RegisterResolver, LoginResolver],
         validate: true,
+        authChecker: ({ context: { req } }) => {
+            return !!req.session.userId
+        }
     });
 
     const apolloServer = new ApolloServer({
         schema,
         context: ({ req }: any) => ({ req })
     });
-    
+
 
     const app = Express();
 
     const RedisStore = connectRedis(session);
-    
+
 
     app.use(cors({
         credentials: true,
@@ -51,7 +54,7 @@ const main = async () => {
             secret: 'qiwroasdjlasddde',
             resave: false,
             saveUninitialized: false,
-            
+
         })
     );
 
