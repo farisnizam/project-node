@@ -10,12 +10,13 @@ import { redis } from "./redis";
 import cors from "cors";
 import { LoginResolver } from "./modules/user/Login";
 import { MeResolver } from "./modules/user/Me";
+import { ConfirmUserResolver } from "./modules/user/confirmUser";
 
 const main = async () => {
     await createConnection();
 
     const schema = await buildSchema({
-        resolvers: [MeResolver, RegisterResolver, LoginResolver],
+        resolvers: [MeResolver, RegisterResolver, LoginResolver, ConfirmUserResolver],
         validate: true,
         authChecker: ({ context: { req } }) => {
             return !!req.session.userId
